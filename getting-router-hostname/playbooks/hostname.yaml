@@ -1,0 +1,8 @@
+---
+- name: Get Hostname From Router
+  hosts: localhost
+  gather_facts: false
+  tasks:
+   - name: Run python file
+     changed_when: false
+     ansible.builtin.command: python ../hostname.py

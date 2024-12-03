@@ -1,0 +1,28 @@
+module hostname {
+    namespace "urn:github.com/AdamRa0/Network-Automation";
+
+    prefix "arna";
+
+    organization
+      "Test Org";
+    description
+      "YANG module for hostname configuration";
+
+    revision "2024-12-03" {
+        description
+          "Initial revision.";
+    }
+
+    container system {
+        leaf hostname {
+            type string {
+                length "1..64";
+                pattern
+                  '[a-zA-Z0-9\-]*';
+            }
+            mandatory true;
+            description
+              "Hostname of router";
+        }
+    }
+}

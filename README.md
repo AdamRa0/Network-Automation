@@ -20,8 +20,9 @@ Learning YANG, NETCONF and Ansible.
 >>>}
 >>> ```
 - Playing With OcNOS router
+
 Contains two python files that fetch YANG schemas and NETCONF capabilities supported by my router.
-It also fetches the running configuration of my router.
+ModulesIt also fetches the running configuration of my router.
 
 Add your router's IP, username and password as OS_ENV_VARIABLES
 

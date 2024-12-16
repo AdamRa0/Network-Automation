@@ -19,11 +19,10 @@ Learning YANG, NETCONF and Ansible.
 >>>    "ping": "pong"
 >>>}
 >>> ```
-- Getting Router Hostname
->> * Does not work with Mikrotik Routers 
->> You'll need your own router with private IP configured
->> Change IP in hostname.py file to that of your router
->> Run
->>> ```bash
->>> ansible-playbook getting-router-hostname/playbooks/hostname.yaml
->>> ```
+- Playing With OcNOS router
+Contains two python files that fetch YANG schemas and NETCONF capabilities supported by my router.
+It also fetches the running configuration of my router.
+
+Add your router's IP, username and password as OS_ENV_VARIABLES
+
+Run the python files and explore your router's capabilities and YANG schemas.

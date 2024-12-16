@@ -1,6 +1,7 @@
 import ncclient
 from ncclient import manager
 import xml.dom.minidom
+import os
 
 class NetconfYangLearner:
     def __init__(self, host, username, password):
@@ -60,8 +61,6 @@ class NetconfYangLearner:
             elif choice == '3':
                 self.get_running_config()
             elif choice == '4':
-                self.explore_yang_models()
-            elif choice == '5':
                 print("Exiting NetConf Learning Demo.")
                 break
             else:

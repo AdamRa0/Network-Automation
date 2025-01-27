@@ -19,7 +19,7 @@ Learning YANG, NETCONF and Ansible.
 >>>    "ping": "pong"
 >>>}
 >>> ```
-- Playing With OcNOS router
+### Playing With OcNOS router
 
 Contains two python files that fetch YANG schemas and NETCONF capabilities supported by my router.
 It also fetches the running configuration of my router.
@@ -27,3 +27,23 @@ It also fetches the running configuration of my router.
 Add your router's IP, username and password as OS_ENV_VARIABLES
 
 Run the python files and explore your router's capabilities and YANG schemas.
+
+### Fetch Interface information
+Fetches the name, operational status and admin status of interfaces created in the router
+
+First, install all the required libraries in your python virtualenv. Then, set the IP_ADDR, USERNAME and PASSWORD for your OcNOS router as OS_ENV_VARIABLES.
+```bash
+python -m venv venv
+
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+EXPORT IPADDR=< your OcNOS router IP >
+EXPORT USERNAME=< your OcNOS router USERNAME >
+EXPORT PASSWORD=< your OcNOS router PASSWORD>
+```
+Finally, run the file
+```bash
+python interfaces/fetch_interfaces_info.py
+```

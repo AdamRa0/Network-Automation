@@ -47,3 +47,32 @@ Finally, run the file
 ```bash
 python interfaces/fetch_interfaces_info.py
 ```
+
+### Small Web App
+Flask application that allows user to view relevant interface information and create new interface
+
+#### Running the application
+##### Via Docker
+```bash
+# Move into the interfaces/small_web_app folder and run
+docker build . -t <desired tag>
+
+# Run image
+docker run <image-tag>
+
+# Visit localhost:5000 in browser
+```
+
+##### No Docker
+```bash
+python -m venv venv
+
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+```
+Finally, run the file
+```bash
+python interfaces/fetch_interfaces_info.py
+```

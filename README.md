@@ -74,5 +74,5 @@ pip install -r requirements.txt
 ```
 Finally, run the file
 ```bash
-python interfaces/fetch_interfaces_info.py
+python interfaces/small_web_app/main.py
 ```

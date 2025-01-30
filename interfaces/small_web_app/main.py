@@ -82,7 +82,7 @@ def create_interface():
         if "<ok/>" in str(result):
             return redirect("/")
         else:
-            print("failed to execute " % CONFIG_INTERFACE)
+            print("failed to execute " % CREATE_INTERFACE_CONFIG)
 
 
 if __name__ == "__main__":

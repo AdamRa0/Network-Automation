@@ -4,7 +4,10 @@ import xml.etree.ElementTree as ET
 
 
 app = Flask(__name__)
-ns = {"ipi-interface": "http://www.ipinfusion.com/yang/ocnos/ipi-interface"}
+ns = {
+  "ipi-interface": "http://www.ipinfusion.com/yang/ocnos/ipi-interface",
+  "ipi-if-ip": "http://www.ipinfusion.com/yang/ocnos/ipi-if-ip"
+}
 
 
 @app.route("/")
@@ -13,7 +16,6 @@ def list_interfaces():
     <filter type="xpath">/ipi-interface:interfaces/ipi-interface:interface</filter>
     """
 
-    # Don't expose your public IP and creds like this. Store in config file. Preferably in instance folder
     with manager.connect(host="192.168.10.102", username="ocnos", password="ocnos", hostkey_verify=False) as m:
         result = m.get(filter=netconf_filter)
 
@@ -36,45 +38,45 @@ def list_interfaces():
 
     return render_template('index.html', data=all_interfaces)
 
-
-@app.route("/new-interface", methods=["GET", "POST"])
-def create_interface():
-    CREATE_INTERFACE_CONFIG = """
-     <config>
-      <interfaces xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-interface">
-        <interface>
-          <name></name>
-          <config>
-            <name></name>
-            <vrf-name>default</vrf-name>
-          </config>
-          <ipv4 xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-if-ip">
-            <config>
-              <enable-dhcp-ip-address></enable-dhcp-ip-address>
-            </config>
-          </ipv4>
-        </interface>
-      </interfaces>
-    </config>
-    """
+@app.route("/config-interface", methods=["POST"])
+@app.route("/config-interface/<name>", methods=["GET"])
+def configure_interface(name=None):
 
     if request.method == "GET":
-        return render_template("create_interface.html")
+        return render_template("configure_interface.html", name=name)
 
     if request.method == "POST":
         interface_name = request.form.get("interface-name")
+        interface_ip = request.form.get("interface-ip")
 
-        config_tree = ET.fromstring(CREATE_INTERFACE_CONFIG)
+        CONFIGURE_INTERFACE_CONFIG = f"""
+        <config>
+          <interfaces xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-interface">
+            <interface>
+              <name>{interface_name}</name>
+              <config>
+                <name></name>
+              </config>
+              <ipv4 xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-if-ip"> 
+                <config> 
+                    <primary-ip-addr></primary-ip-addr> 
+                </config> 
+              </ipv4>
+            </interface>
+          </interfaces>
+        </config>
+        """
 
-        name_tag = config_tree.find(".//ipi-interface:name", namespaces=ns)
+        config_tree = ET.fromstring(CONFIGURE_INTERFACE_CONFIG)
+
         config_name_tag = config_tree.find(".//ipi-interface:config/ipi-interface:name", namespaces=ns)
+        config_ip_tag = config_tree.find(".//ipi-if-ip:ipv4/ipi-if-ip:config/ipi-if-ip:primary-ip-addr", namespaces=ns)
 
-        if name_tag is not None: name_tag.text = interface_name
         if config_name_tag is not None: config_name_tag.text = interface_name
+        if config_ip_tag is not None: config_ip_tag.text = interface_ip
 
         new_config_tree = ET.tostring(config_tree, encoding="unicode")
 
-        # Don't expose your public IP and creds like this. Store in config file. Preferably in instance folder
         with manager.connect(host="192.168.10.102", username="ocnos", password="ocnos", hostkey_verify=False) as m:
             result = m.edit_config(target="candidate", config=new_config_tree)
             m.commit()
@@ -82,7 +84,7 @@ def create_interface():
         if "<ok/>" in str(result):
             return redirect("/")
         else:
-            print("failed to execute " % CREATE_INTERFACE_CONFIG)
+            print("failed to execute " % CONFIGURE_INTERFACE_CONFIG)
 
 
 if __name__ == "__main__":

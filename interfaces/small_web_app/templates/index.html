@@ -14,13 +14,12 @@
         {% for interface in data %}
         <tr>
             <th scope="row">{{ loop.index }}</th>
-            <td>{{ interface.get("name") }}</td>
+            <td> <a href="{{url_for('configure_interface', name=interface.get('name'))}}">{{ interface.get("name") }}</a> </td>
             <td>{{ interface.get("oper-status") }}</td>
             <td>{{ interface.get("admin-status") }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<br/>
-<a href="{{ url_for('create_interface') }}" class="btn btn-primary btn-lg" role="button">Create Interface</a>
+<br />
 {% endblock %}

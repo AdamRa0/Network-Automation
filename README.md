@@ -49,7 +49,11 @@ python interfaces/fetch_interfaces_info.py
 ```
 
 ### Small Web App
-Flask application that allows user to view relevant interface information and create new interface
+Flask application that allows user to view relevant interface information and configure interface IP
+
+#### Features being worked on
+- VLAN Configuration
+- OSPF Configuration
 
 #### Running the application
 ##### Via Docker

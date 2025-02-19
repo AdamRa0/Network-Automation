@@ -55,7 +55,7 @@ def configure_interface(name=None):
             <interface>
               <name>{interface_name}</name>
               <config>
-                <name></name>
+                <name>{interface_name}</name>
               </config>
               <ipv4 xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-if-ip"> 
                 <config> 
@@ -69,10 +69,8 @@ def configure_interface(name=None):
 
         config_tree = ET.fromstring(CONFIGURE_INTERFACE_CONFIG)
 
-        config_name_tag = config_tree.find(".//ipi-interface:config/ipi-interface:name", namespaces=ns)
         config_ip_tag = config_tree.find(".//ipi-if-ip:ipv4/ipi-if-ip:config/ipi-if-ip:primary-ip-addr", namespaces=ns)
 
-        if config_name_tag is not None: config_name_tag.text = interface_name
         if config_ip_tag is not None: config_ip_tag.text = interface_ip
 
         new_config_tree = ET.tostring(config_tree, encoding="unicode")

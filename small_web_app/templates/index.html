@@ -16,7 +16,7 @@
             {% for interface in data %}
             <tr>
                 <th scope="row">{{ loop.index }}</th>
-                <td> <a href="{{url_for('configure_interface', name=interface.get('name'))}}">{{ interface.get("name")
+                <td> <a href="{{url_for('interfaces.configure_interface', name=interface.get('name'))}}">{{ interface.get("name")
                         }}</a> </td>
                 <td>{{ interface.get("oper-status") }}</td>
                 <td>{{ interface.get("admin-status") }}</td>

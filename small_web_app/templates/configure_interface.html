@@ -2,10 +2,10 @@
 
 {% block content %}
 <div class="container">
-    <form action="{{ url_for('configure_interface') }}" method="POST">
+    <form action="{{ url_for('interfaces.configure_interface') }}" method="POST">
         <div class="mb-3">
             <label for="interfaceName" class="form-label">Interface Name</label>
-            <input type="text" class="form-control" id="interfaceName" name="interface-name" value="{{ name or '' }}">
+            <input type="text" class="form-control" id="interfaceName" name="interface-name" value="{{ name or '' }}" disabled>
         </div>
         <div class="mb-3">
             <label for="interfaceIP" class="form-label">New Interface IP</label>

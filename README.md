@@ -49,7 +49,7 @@ python interfaces/fetch_interfaces_info.py
 ```
 
 ### Small Web App
-Flask application that allows user to view relevant interface information and configure interface IP + name
+Flask application that allows user to view relevant interface information and configure interface IP
 
 #### Features being worked on
 - VLAN Configuration
@@ -80,3 +80,5 @@ Finally, run the app
 ```bash
 flask --app app run --debug
 ```
+
+visit localhost:5000/interfaces/

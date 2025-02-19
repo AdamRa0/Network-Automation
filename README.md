@@ -49,7 +49,7 @@ python interfaces/fetch_interfaces_info.py
 ```
 
 ### Small Web App
-Flask application that allows user to view relevant interface information and configure interface IP
+Flask application that allows user to view relevant interface information and configure interface IP + name
 
 #### Features being worked on
 - VLAN Configuration
@@ -58,7 +58,7 @@ Flask application that allows user to view relevant interface information and co
 #### Running the application
 ##### Via Docker
 ```bash
-# Move into the interfaces/small_web_app folder and run
+# Move into the small_web_app folder and run
 docker build . -t <desired tag>
 
 # Run image
@@ -76,7 +76,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 ```
-Finally, run the file
+Finally, run the app
 ```bash
-python interfaces/small_web_app/main.py
+flask --app app run --debug
 ```

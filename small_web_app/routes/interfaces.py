@@ -2,33 +2,30 @@ from flask import Flask, jsonify, render_template, request, redirect, Blueprint
 from ncclient import manager
 import xml.etree.ElementTree as ET
 
+from constants import NAMESPACE
+from filter_string_provider import provide_filter_string
+
 
 interface_bp = Blueprint("interfaces", __name__, url_prefix="/interfaces")
-ns = {
-  "ipi-interface": "http://www.ipinfusion.com/yang/ocnos/ipi-interface",
-  "ipi-if-ip": "http://www.ipinfusion.com/yang/ocnos/ipi-if-ip"
-}
 
 
 @interface_bp.route("/")
 def list_interfaces():
-    netconf_filter = """
-    <filter type="xpath">/ipi-interface:interfaces/ipi-interface:interface</filter>
-    """
+    netconf_filter = provide_filter_string("/ipi-interface:interfaces/ipi-interface:interface")
 
     with manager.connect(host="192.168.10.102", username="ocnos", password="ocnos", hostkey_verify=False) as m:
         result = m.get(filter=netconf_filter)
 
     tree = ET.fromstring(result.xml)
 
-    interfaces = tree.findall(".//ipi-interface:interface", namespaces=ns)
+    interfaces = tree.findall(".//ipi-interface:interface", namespaces=NAMESPACE)
 
     all_interfaces: list[dict[str, str]] = []
 
     for interface in interfaces:
-        name = interface.find(".//ipi-interface:name", namespaces=ns).text
-        oper_status = interface.find(".//ipi-interface:state/ipi-interface:oper-status", namespaces=ns).text
-        admin_status = interface.find(".//ipi-interface:state/ipi-interface:admin-status", namespaces=ns).text
+        name = interface.find(".//ipi-interface:name", namespaces=NAMESPACE).text
+        oper_status = interface.find(".//ipi-interface:state/ipi-interface:oper-status", namespaces=NAMESPACE).text
+        admin_status = interface.find(".//ipi-interface:state/ipi-interface:admin-status", namespaces=NAMESPACE).text
 
         all_interfaces.append({
             "name": name,
@@ -69,7 +66,7 @@ def configure_interface(name=None):
 
         config_tree = ET.fromstring(CONFIGURE_INTERFACE_CONFIG)
 
-        config_ip_tag = config_tree.find(".//ipi-if-ip:ipv4/ipi-if-ip:config/ipi-if-ip:primary-ip-addr", namespaces=ns)
+        config_ip_tag = config_tree.find(".//ipi-if-ip:ipv4/ipi-if-ip:config/ipi-if-ip:primary-ip-addr", namespaces=NAMESPACE)
 
         if config_ip_tag is not None: config_ip_tag.text = interface_ip
 

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Create VLAN</h2>
+    <form method="POST" action="{{ url_for('vlans.create_vlan') }}">
+        <div class="mb-3">
+            <label for="bridgeId" class="form-label">Bridge id &lpar;1-32&rpar;</label>
+            <input class="form-control" id="bridgeId" name="bridge-id">
+        </div>
+        <div class="mb-3">
+            <label for="bridgeLabel" class="form-label">Bridge Label</label>
+            <input class="form-control" id="bridgeLabel" name="bridge-label">
+        </div>
+        <div class="mb-3">
+            <label for="bridgeProtocol" class="form-label">Bridge Protocol</label>
+            <select name="bridge-protocol" id="bridgeProtocol" class="form-select">
+                <option selected>Select Bridge Protocol</option>
+                <option value="ieee">ieee</option>
+                <option value="ieee vlan-bridge">ieee vlan-bridge</option>
+                <option value="rstp">rstp</option>
+                <option value="rstp vlan-bridge">rstp vlan-bridge</option>
+                <option value="mstp">mstp</option>
+                <option value="rstp ring">rstp ring</option>
+                <option value="mstp ring">mstp ring</option>
+                <option value="rstp vlan-bridge ring">rstp vlan-bridge ring</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="vlanId" class="form-label">VLAN ID &lpar;2-4094&rpar;</label>
+            <input class="form-control" id="vlanId" name="vlan-id">
+        </div>
+        <div class="mb-3">
+            <div class="form-check">
+                <!-- checkbox value when unchecked-->
+                <input name="vlan-state" value="disable" hidden id="hiddenInput">
+                <input class="form-check-input" type="checkbox" value="enable" id="enableVLAN" name="vlan-state"
+                    onchange="this.checked ? document.getElementById('hiddenInput').remove() : ''">
+                <label class="form-check-label" for="enableVLAN">
+                    Enable
+                </label>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="switchportMode" class="form-label">Switchport Mode</label>
+            <select name="switchport-mode" id="switchportMode" class="form-select">
+                <option selected>Select Switchport Mode</option>
+                <option value="access">access</option>
+                <option value="hybrid">hybrid</option>
+                <option value="trunk">trunk</option>
+                <option value="provider-network">provider-network</option>
+                <option value="customer-edge access">customer-edge access</option>
+                <option value="customer-edge hybrid">customer-edge hybrid</option>
+                <option value="customer-edge trunk">customer-edge trunk</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="interfaceName" class="form-label">Interface name</label>
+            <input class="form-control" id="interfaceName" name="interface-name">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

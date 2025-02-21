@@ -33,7 +33,7 @@ def list_interfaces():
             "admin-status": admin_status
         })
 
-    return render_template('index.html', data=all_interfaces)
+    return render_template('interfaces.html', data=all_interfaces)
 
 @interface_bp.route("/config-interface", methods=["POST"])
 @interface_bp.route("/config-interface/<name>", methods=["GET"])
@@ -77,6 +77,6 @@ def configure_interface(name=None):
             m.commit()
 
         if "<ok/>" in str(result):
-            return redirect("/")
+            return redirect("/interfaces/")
         else:
             print("failed to execute " % CONFIGURE_INTERFACE_CONFIG)

@@ -13,7 +13,7 @@ VLAN_CREATION_STRING = """
         <!-- Bridge ID goes here -->
 		<instance-name></instance-name> 
 		<config> 
-            <1-- Bridge label and bridge type go here -->
+            <!-- Bridge label and bridge type go here -->
 			<instance-name></instance-name> 
 			<instance-type>l2ni</instance-type> 
 		</config> 
@@ -25,7 +25,7 @@ VLAN_CREATION_STRING = """
 				    <config> 
 					    <vlan-id></vlan-id> 
                         <!-- state = enable or disable -->
-					    <state>disable</state> 
+					    <state></state> 
 				    </config> 
 				</vlan> 
 			</vlans> 
@@ -46,6 +46,9 @@ VLAN_CREATION_STRING = """
 		</bridge> 
 	</network-instance> 
 </network-instances>
+"""
+
+INTERFACES_CONFIG = """
 <interfaces xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-interface"> 
 	<interface> 
         <!-- interface name -->
@@ -54,11 +57,11 @@ VLAN_CREATION_STRING = """
 			<name></name> 
 		</config>
         <!-- converts interface to switchport --> 
-		</enable-switchport>
+		<enable-switchport></enable-switchport>
         <port-vlan xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-port-vlan"> 
 		    <switched-vlans> 
 		        <switched-vlan>
-                    <!-- switchport mode ---> 
+                    <!-- switchport mode --> 
 			        <interface-mode></interface-mode> 
 			        <config> 
 				        <interface-mode></interface-mode> 

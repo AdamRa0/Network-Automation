@@ -36,7 +36,7 @@ def create_vlan():
 
         if vlan_id_tag is not None: vlan_id_tag.text = vlan_id
         if vlan_config_id_tag is not None: vlan_config_id_tag.text = vlan_id
-        if vlan_state_tag is not None: vlan_state_tag.text = vlan_state
+        if vlan_state_tag is not None: vlan_state_tag.text = "disable" if vlan_state == None else vlan_state
 
         if bridge_protocol_tag is not None: bridge_protocol_tag.text = bridge_protocol
 

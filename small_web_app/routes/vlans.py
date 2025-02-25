@@ -62,16 +62,13 @@ def create_vlan():
         if switchport_vlan_config_tag is not None: switchport_vlan_config_tag.text = vlan_id
 
         NEW_VLAN_CONFIG = ET.tostring(VLAN_CONFIG, encoding="unicode")
-        NEW_INTERFACE_CONFIG = ET.tostring(INTERFACE_CONFIG, encoding="unicode")
+        # NEW_INTERFACE_CONFIG = ET.tostring(INTERFACE_CONFIG, encoding="unicode")
 
         with manager.connect(host="192.168.10.102", username="ocnos", password="ocnos", hostkey_verify=False) as m:
-            vlan_result = m.edit_config(target="candidate", config=NEW_VLAN_CONFIG)
-            m.commit()
-
-            if "<ok/>" in str(vlan_result):
-                interface_result = m.edit_config(target="candidate", config=NEW_INTERFACE_CONFIG)
+            try:
+                vlan_result = m.edit_config(target="candidate", config=NEW_VLAN_CONFIG)
                 m.commit()
-                if "<ok/>" in str(interface_result):
-                    redirect("/vlans/create-vlan")
-            else:
-                print("failed to execute")
+            except Exception as e:
+                print(f"Detailed error message: {e}")
+
+        return redirect("/interfaces/")

@@ -21,14 +21,6 @@ VLAN_CREATION_STRING = """
                 <config>
                     <protocol></protocol>
                 </config>
-                <bridge-ports>
-                    <interface>
-                        <name></name>
-                        <config>
-                            <name></name>
-                        </config>
-                    </interface>
-                </bridge-ports>
                 <vlans xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-vlan">
                     <vlan>
                         <vlan-id></vlan-id>
@@ -43,6 +35,34 @@ VLAN_CREATION_STRING = """
                         </customer-vlan>
                     </vlan>
                 </vlans>
+            </bridge>
+        </network-instance>
+    </network-instances>
+</config>
+"""
+
+BIND_INTERFACE_TO_BRIDGE_CONFIG = """
+<config>
+    <network-instances xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-network-instance"> 
+        <network-instance>
+            <instance-name></instance-name>
+            <instance-type>l2ni</instance-type>
+            <config>
+                <instance-name></instance-name>
+                <instance-type>l2ni</instance-type>
+            </config>
+            <bridge xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-bridge">
+                <config>
+                    <protocol></protocol>
+                </config>
+                <bridge-ports>
+                    <interface>
+                        <name></name>
+                        <config>
+                            <name></name>
+                        </config>
+                    </interface>
+                </bridge-ports>
             </bridge>
         </network-instance>
     </network-instances>

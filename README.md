@@ -49,10 +49,15 @@ python interfaces/fetch_interfaces_info.py
 ```
 
 ### Small Web App
-Flask application that allows user to view relevant interface information and configure interface IP
+Flask application with the following features
+- Interface info
+- Interface IP configuration
+- Layer 2 VLAN configuration
 
 #### Features being worked on
-- VLAN Configuration
+- Layer 3 VLAN Configuration
+- Bounding interfaces to bridges
+- Bounding VLANS to interfaces
 - OSPF Configuration
 
 #### Running the application
@@ -81,4 +86,7 @@ Finally, run the app
 flask --app app run --debug
 ```
 
-visit localhost:5000/interfaces/
+Endpoints
+- localhost:5000/interfaces/: view relevant interface info
+- visit localhost:5000/interfaces/<interface_name>: configure interface IP
+- visit localhost:5000/vlans/create-vlan: create layer 2 VLAN

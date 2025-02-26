@@ -5,14 +5,41 @@
     <form action="{{ url_for('interfaces.configure_interface') }}" method="POST">
         <div class="mb-3">
             <label for="interfaceName" class="form-label">Interface Name</label>
-            <input type="text" class="form-control" id="interfaceName" name="interface-name" value="{{ name or '' }}" disabled>
+            <input type="text" class="form-control" id="interfaceName" name="interface-name" value="{{ name or '' }}"
+                disabled>
         </div>
         <div class="mb-3">
             <label for="interfaceIP" class="form-label">New Interface IP</label>
             <input type="text" class="form-control" id="interfaceIP" name="interface-ip">
         </div>
+        {% if 'vlan' in name %}
+        <div class="mb-3">
+            <label for="parentInterface" class="form-label">Interface to bind to</label>
+            <input type="text" class="form-control" id="parentInterface" name="parent-interface">
+            <br>
+            <label for="switchportMode" class="form-label">Switchport Mode</label>
+            <select name="switchport-mode" id="switchportMode" class="form-select">
+                <option selected>Select Switchport Mode</option>
+                <option value="access">access</option>
+                <option value="hybrid">hybrid</option>
+                <option value="trunk">trunk</option>
+                <option value="provider-network">provider-network</option>
+                <option value="customer-edge access">customer-edge access</option>
+                <option value="customer-edge hybrid">customer-edge hybrid</option>
+                <option value="customer-edge trunk">customer-edge trunk</option>
+            </select>
+        </div>
+        {% endif %}
+        {% if 'eth' in name %}
+        <div class="mb-3">
+            <label for="interfaceBridge" class="form-label">Bridge to bind to</label>
+            <input type="text" class="form-control" id="interfaceBridge" name="bridge-interface">
+        </div>
+        {% endif %}
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
+
+
 
 {% endblock %}

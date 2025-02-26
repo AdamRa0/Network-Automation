@@ -58,6 +58,11 @@ Flask application with the following features
 #### Features being worked on
 - Bounding interfaces to bridges
 - Bounding VLANS to interfaces
+- Prevent IPs from being assigned to layer 2 VLANS
+- Logging
+- Better Error Handling
+- Fetch IP of interfaces and display them.
+- Populate IP (if already set) field in configure interfaces form
 - OSPF Configuration
 
 #### Running the application

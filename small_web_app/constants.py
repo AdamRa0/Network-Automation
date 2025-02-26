@@ -99,29 +99,25 @@ BIND_INTERFACE_TO_BRIDGE_CONFIG = """
 </config>
 """
 
-INTERFACES_CONFIG = """
+BIND_L2_VLAN_TO_INTERFACE = """
 <config>
     <interfaces xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-interface"> 
         <interface> 
-            <!-- interface name -->
             <name></name> 
             <config> 
                 <name></name> 
-                <!-- converts interface to switchport --> 
                 <enable-switchport></enable-switchport>
             </config>
             <port-vlan xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-port-vlan"> 
                 <switched-vlans> 
                     <switched-vlan>
-                        <!-- switchport mode --> 
                         <interface-mode></interface-mode> 
                         <config> 
                             <interface-mode></interface-mode> 
                         </config> 
                         <vlans> 
                             <config> 
-                                    <!-- VLAN ID to associate with port -->
-                                    <vlan-id></vlan-id>
+                                <vlan-id></vlan-id>
                             </config> 
                         </vlans> 
                     </switched-vlan> 
@@ -129,5 +125,32 @@ INTERFACES_CONFIG = """
             </port-vlan> 
         </interface> 
     </interfaces>
+</config>
+"""
+
+BIND_L3_VLAN_TO_INTERFACE = """
+<config>
+  <interface>
+    <name></name>
+    <config>
+      <name></name>
+      <enable-switchport></enable-switchport>
+    </config>
+    <port-vlan xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-port-vlan">
+      <switched-vlans>
+        <switched-vlan>
+          <interface-mode></interface-mode>
+          <config>
+            <interface-mode></interface-mode>
+          </config>
+          <allowed-vlan>
+            <config>
+              <allowed-vlan-id></allowed-vlan-id>
+            </config>
+          </allowed-vlan>
+        </switched-vlan>
+      </switched-vlans>
+    </port-vlan>
+  </interface>
 </config>
 """

@@ -40,7 +40,27 @@ def list_interfaces():
 def configure_interface(name=None):
 
     if request.method == "GET":
-        return render_template("configure_interface.html", name=name)
+        vlan_id = name.split(".")[-1]
+
+        is_l2_vlan = False
+
+        netconf_filter = provide_filter_string("/ipi-network-instance:instances/ipi-network-instance:instance")
+
+        with manager.connect(host="192.168.10.102", username="ocnos", password="ocnos", hostkey_verify=False) as m:
+            result = m.get(filter=netconf_filter)
+
+        tree = ET.fromstring(result.xml)
+
+        vlans = tree.findall(".//ipi-vlan:vlan", namespaces=NAMESPACE)
+
+        for vlan in vlans:
+            vlan_identifier = vlan.find(".//ipi-vlan:vlan-id", namespaces=NAMESPACE).text
+            vlan_state = vlan.find(".//ipi-vlan:customer-vlan/ipi-vlan:config/ipi-vlan:state")
+
+            if vlan_identifier == vlan_id and vlan_state is not None:
+                is_l2_vlan = True
+
+        return render_template("configure_interface.html", name=name, isL2Vlan=is_l2_vlan)
 
     if request.method == "POST":
         interface_name = request.form.get("interface-name")

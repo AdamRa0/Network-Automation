@@ -53,12 +53,12 @@ Flask application with the following features
 - Interface info
 - Interface IP configuration
 - Layer 2 VLAN configuration
-- VLAN interface configuration
+- VLAN interface configuration (Layer 3 VLANS)
 
 #### Features being worked on
 - Bounding interfaces to bridges
 - Bounding VLANS to interfaces
-- Prevent IPs from being assigned to VLAN interfaces
+- Prevent IPs from being assigned to VLAN interfaces (Layer 3 VLANS)
 - Logging
 - Better Error Handling
 - Fetch IP of interfaces and display them.
@@ -93,5 +93,5 @@ flask --app app run --debug
 
 Endpoints
 - localhost:5000/interfaces/: view relevant interface info
-- visit localhost:5000/interfaces/<interface_name>: configure interface IP
-- visit localhost:5000/vlans/create-vlan: create layer 2 VLAN
+- localhost:5000/interfaces/<interface_name>: configure interfaces and VLANS
+- localhost:5000/vlans/create-vlan: create VLANS

@@ -53,9 +53,9 @@ Flask application with the following features
 - Interface info
 - Interface IP configuration
 - Layer 2 VLAN configuration
+- Layer 3 VLAN configuration
 
 #### Features being worked on
-- Layer 3 VLAN Configuration
 - Bounding interfaces to bridges
 - Bounding VLANS to interfaces
 - OSPF Configuration

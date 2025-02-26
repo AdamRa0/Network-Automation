@@ -7,7 +7,7 @@ NAMESPACE = {
   "ipi-port-vlan": "http://www.ipinfusion.com/yang/ocnos/ipi-port-vlan"
 }
 
-VLAN_CREATION_STRING = """
+L2_VLAN_CREATION_STRING = """
 <config>
     <network-instances xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-network-instance"> 
         <network-instance>
@@ -41,7 +41,7 @@ VLAN_CREATION_STRING = """
 </config>
 """
 
-BIND_INTERFACE_TO_BRIDGE_CONFIG = """
+L3_VLAN_CREATION_STRING = """
 <config>
     <network-instances xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-network-instance"> 
         <network-instance>
@@ -55,6 +55,36 @@ BIND_INTERFACE_TO_BRIDGE_CONFIG = """
                 <config>
                     <protocol></protocol>
                 </config>
+                <vlans xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-vlan">
+                    <vlan>
+                        <vlan-id></vlan-id>
+                        <config>
+                            <vlan-id></vlan-id>
+                        </config>
+                        <customer-vlan>
+                            <config>
+                                <type>customer</type>
+                            </config>
+                        </customer-vlan>
+                    </vlan>
+                </vlans>
+            </bridge>
+        </network-instance>
+    </network-instances>
+</config>
+"""
+
+BIND_INTERFACE_TO_BRIDGE_CONFIG = """
+<config>
+    <network-instances xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-network-instance"> 
+        <network-instance>
+            <instance-name></instance-name>
+            <instance-type>l2ni</instance-type>
+            <config>
+                <instance-name></instance-name>
+                <instance-type>l2ni</instance-type>
+            </config>
+            <bridge xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-bridge">
                 <bridge-ports>
                     <interface>
                         <name></name>

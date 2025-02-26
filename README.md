@@ -53,12 +53,12 @@ Flask application with the following features
 - Interface info
 - Interface IP configuration
 - Layer 2 VLAN configuration
-- Layer 3 VLAN configuration
+- VLAN interface configuration
 
 #### Features being worked on
 - Bounding interfaces to bridges
 - Bounding VLANS to interfaces
-- Prevent IPs from being assigned to layer 2 VLANS
+- Prevent IPs from being assigned to VLAN interfaces
 - Logging
 - Better Error Handling
 - Fetch IP of interfaces and display them.

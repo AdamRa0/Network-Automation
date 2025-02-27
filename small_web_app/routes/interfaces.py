@@ -55,7 +55,7 @@ def configure_interface(name=None):
 
         for vlan in vlans:
             vlan_identifier = vlan.find(".//ipi-vlan:vlan-id", namespaces=NAMESPACE).text
-            vlan_state = vlan.find(".//ipi-vlan:customer-vlan/ipi-vlan:config/ipi-vlan:state")
+            vlan_state = vlan.find(".//ipi-vlan:customer-vlan/ipi-vlan:config/ipi-vlan:state", namespaces=NAMESPACE)
 
             if vlan_identifier == vlan_id and vlan_state is not None:
                 is_l2_vlan = True

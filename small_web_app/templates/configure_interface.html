@@ -8,7 +8,7 @@
             <input type="text" class="form-control" id="interfaceName" name="interface-name" value="{{ name or '' }}"
                 disabled>
         </div>
-        {% if 'eth' in name or if 'vlan' in name and isL2Vlan == False %}
+        {% if ('eth' in name or 'vlan' in name) and isL2Vlan == False %}
         <div class="mb-3">
             <label for="interfaceIP" class="form-label">New Interface IP</label>
             <input type="text" class="form-control" id="interfaceIP" name="interface-ip">

@@ -6,7 +6,7 @@
         <div class="mb-3">
             <label for="interfaceName" class="form-label">Interface Name</label>
             <input type="text" class="form-control" id="interfaceName" name="interface-name" value="{{ name or '' }}"
-                disabled>
+                readonly>
         </div>
         {% if ('eth' in name or 'vlan' in name) and isL2Vlan == False %}
         <div class="mb-3">

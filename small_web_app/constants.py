@@ -130,28 +130,30 @@ BIND_L2_VLAN_TO_INTERFACE = """
 
 BIND_L3_VLAN_TO_INTERFACE = """
 <config>
-  <interface xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-interface">
-    <name></name>
-    <config>
-      <name></name>
-      <enable-switchport></enable-switchport>
-    </config>
-    <port-vlan xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-port-vlan">
-      <switched-vlans>
-        <switched-vlan>
-          <interface-mode></interface-mode>
-          <config>
-            <interface-mode></interface-mode>
-          </config>
-          <allowed-vlan>
+  <interfaces xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-interface">
+        <interface>
+            <name></name>
             <config>
-              <allowed-vlan-id></allowed-vlan-id>
+                <name></name>
+                <enable-switchport></enable-switchport>
             </config>
-          </allowed-vlan>
-        </switched-vlan>
-      </switched-vlans>
-    </port-vlan>
-  </interface>
+            <port-vlan xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-port-vlan">
+                <switched-vlans>
+                    <switched-vlan>
+                    <interface-mode></interface-mode>
+                    <config>
+                        <interface-mode></interface-mode>
+                    </config>
+                    <allowed-vlan>
+                        <config>
+                        <allowed-vlan-id></allowed-vlan-id>
+                        </config>
+                    </allowed-vlan>
+                    </switched-vlan>
+                </switched-vlans>
+            </port-vlan>
+        </interface>
+    </interfaces>
 </config>
 """
 

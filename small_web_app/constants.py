@@ -130,7 +130,7 @@ BIND_L2_VLAN_TO_INTERFACE = """
 
 BIND_L3_VLAN_TO_INTERFACE = """
 <config>
-  <interface>
+  <interface xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-interface">
     <name></name>
     <config>
       <name></name>
@@ -152,5 +152,23 @@ BIND_L3_VLAN_TO_INTERFACE = """
       </switched-vlans>
     </port-vlan>
   </interface>
+</config>
+"""
+
+INTERFACE_CONFIG = """
+<config>
+    <interfaces xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-interface">
+        <interface>
+            <name></name>
+            <config>
+                <name></name>
+            </config>
+            <ipv4 xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-if-ip"> 
+                <config> 
+                    <primary-ip-addr></primary-ip-addr> 
+                </config> 
+            </ipv4>
+        </interface>
+    </interfaces>
 </config>
 """

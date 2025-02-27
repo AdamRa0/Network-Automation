@@ -10,7 +10,7 @@
         </div>
         {% if ('eth' in name or 'vlan' in name) and isL2Vlan == False %}
         <div class="mb-3">
-            <label for="interfaceIP" class="form-label">New Interface IP</label>
+            <label for="interfaceIP" class="form-label">Primary IP Address</label>
             <input type="text" class="form-control" id="interfaceIP" name="interface-ip">
         </div>
         {% endif %}
@@ -30,6 +30,7 @@
                 <option value="customer-edge hybrid">customer-edge hybrid</option>
                 <option value="customer-edge trunk">customer-edge trunk</option>
             </select>
+            <input type="text" name="is-l2-vlan" value="{{ isL2Vlan }}" hidden>
         </div>
         {% endif %}
         {% if 'eth' in name %}
@@ -41,7 +42,4 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
-
-
-
 {% endblock %}

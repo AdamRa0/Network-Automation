@@ -73,8 +73,6 @@ def configure_interface(name=None):
 
         BIND_CONFIG = BIND_INTERFACE_TO_BRIDGE_CONFIG if bind_bridge_id is not None else BIND_L2_VLAN_TO_INTERFACE if is_l2_vlan == "True" and bind_interface_name is not None else BIND_L3_VLAN_TO_INTERFACE
 
-        print(interface_name)
-
         config_tree = ET.fromstring(INTERFACE_CONFIG)
         bind_config_tree = ET.fromstring(BIND_CONFIG)
 
@@ -136,37 +134,38 @@ def configure_interface(name=None):
 
         new_config_tree = ET.tostring(config_tree, encoding="unicode")
 
-        print(new_bind_config_tree)
-
         with manager.connect(host="192.168.10.102", username="ocnos", password="ocnos", hostkey_verify=False) as m:
-            result = m.edit_config(target="candidate", config=new_config_tree)
-            m.commit()
+            if bind_bridge_id is not None:
+                try:
+                    result = m.edit_config(target="candidate", config=new_config_tree)
+                    m.commit()
 
-            if "<ok/>" in str(result):
-                if bind_bridge_id is not None:
-                    try:
+                    if "<ok/>" in str(result):
                         bind_bridge_result = m.edit_config(target="candidate", config=new_bind_config_tree)
                         m.commit()
-                    except Exception as e:
-                        print(f"Error: {e}")
-                        return redirect("/vlans/create-vlan")
 
-                if is_l2_vlan and bind_interface_name is not None:
-                    try:
-                        bind_bridge_result = m.edit_config(target="candidate", config=new_bind_config_tree)
-                        m.commit()
-                    except Exception as e:
-                        print(f"Error: {e}")
-                        return redirect("/vlans/create-vlan")
+                except Exception as e:
+                    print(f"Error: {e}")
+                    return redirect("/vlans/create-vlan")
 
-                if not is_l2_vlan and bind_interface_name is not None:
-                    try:
-                        bind_bridge_result = m.edit_config(target="candidate", config=new_bind_config_tree)
+            if is_l2_vlan and bind_interface_name is not None:
+                try:
+                    bind_l2_vlan_result = m.edit_config(target="candidate", config=new_bind_config_tree)
+                    m.commit()
+                except Exception as e:
+                    print(f"Error: {e}")
+                    return redirect("/vlans/create-vlan")
+
+            if not is_l2_vlan and bind_interface_name is not None:
+                try:
+                    result = m.edit_config(target="candidate", config=new_config_tree)
+                    m.commit()
+
+                    if "<ok/>" in str(result):
+                        bind_l3_vlan_result = m.edit_config(target="candidate", config=new_bind_config_tree)
                         m.commit()
-                    except Exception as e:
-                        print(f"Error: {e}")
-                        return redirect("/vlans/create-vlan")
-                
-                return redirect("/interfaces/")
-            else:
-                print("failed to execute " % CONFIGURE_INTERFACE_CONFIG)
+                except Exception as e:
+                    print(f"Error: {e}")
+                    return redirect("/vlans/create-vlan")
+            
+            return redirect("/interfaces/")

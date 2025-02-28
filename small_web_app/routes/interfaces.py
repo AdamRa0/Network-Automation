@@ -41,28 +41,28 @@ def configure_interface(name=None):
 
     if request.method == "GET":
         is_l2_vlan = False
-        vlan_id = name.split(".")[-1]
-        bridge_id = list(name.split(".")[0])[-1]
 
-        netconf_filter = provide_filter_string("/ipi-network-instance:instances/ipi-network-instance:instance")
+        if "vlan" in name:
+            vlan_id = name.split(".")[-1]
+            bridge_id = list(name.split(".")[0])[-1]
 
-        with manager.connect(host="192.168.10.102", username="ocnos", password="ocnos", hostkey_verify=False) as m:
-            result = m.get(filter=netconf_filter)
+            netconf_filter = provide_filter_string("/ipi-network-instance:instances/ipi-network-instance:instance")
 
-        tree = ET.fromstring(result.xml)
+            with manager.connect(host="192.168.10.102", username="ocnos", password="ocnos", hostkey_verify=False) as m:
+                result = m.get(filter=netconf_filter)
 
-        network_instances = tree.findall(".//ipi-network-instance:network-instance", namespaces=NAMESPACE)
+            tree = ET.fromstring(result.xml)
 
-        for instance in network_instances:
-            bridge_id_val = instance.find(".//ipi-network-instance:instance-name", namespaces=NAMESPACE).text
+            network_instances = tree.findall(".//ipi-network-instance:network-instance", namespaces=NAMESPACE)
 
+            for instance in network_instances:
+                bridge_id_val = instance.find(".//ipi-network-instance:instance-name", namespaces=NAMESPACE).text
+                if bridge_id == bridge_id_val:
+                    vlan_identifier = instance.find(".//ipi-vlan:vlans/ipi-vlan:vlan/ipi-vlan:vlan-id", namespaces=NAMESPACE).text
+                    vlan_state = instance.find(".//ipi-vlan:customer-vlan/ipi-vlan:config/ipi-vlan:state", namespaces=NAMESPACE)
 
-            if bridge_id == bridge_id_val:
-                vlan_identifier = instance.find(".//ipi-vlan:vlans/ipi-vlan:vlan/ipi-vlan:vlan-id", namespaces=NAMESPACE).text
-                vlan_state = instance.find(".//ipi-vlan:customer-vlan/ipi-vlan:config/ipi-vlan:state", namespaces=NAMESPACE)
-
-                if vlan_identifier == vlan_id and vlan_state is not None:
-                    is_l2_vlan = True
+                    if vlan_identifier == vlan_id and vlan_state is not None:
+                        is_l2_vlan = True
 
         return render_template("configure_interface.html", name=name, isL2Vlan=is_l2_vlan)
 

@@ -56,9 +56,9 @@ Flask application with the following features
 - VLAN interface configuration (Layer 3 VLANS)
 - Bounding VLANS to interfaces
 - Prevent IPs from being assigned to layer 2 VLANS
+- Bounding interfaces to bridges
 
 #### Features being worked on
-- Bounding interfaces to bridges
 - Logging
 - Better Error Handling
 - Fetch IP of interfaces and display them.

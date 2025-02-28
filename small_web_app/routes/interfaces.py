@@ -162,7 +162,6 @@ def configure_interface(name=None):
 
             if bind_bridge_id is not None and bind_bridge_id == "":
                 try:
-                    print(new_config_tree)
                     result = m.edit_config(target="candidate", config=new_config_tree)
                     m.commit()
 

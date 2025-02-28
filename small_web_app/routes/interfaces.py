@@ -42,6 +42,7 @@ def configure_interface(name=None):
     if request.method == "GET":
         is_l2_vlan = False
         vlan_id = name.split(".")[-1]
+        bridge_id = list(name.split(".")[0])[-1]
 
         netconf_filter = provide_filter_string("/ipi-network-instance:instances/ipi-network-instance:instance")
 
@@ -50,14 +51,18 @@ def configure_interface(name=None):
 
         tree = ET.fromstring(result.xml)
 
-        vlans = tree.findall(".//ipi-vlan:vlan", namespaces=NAMESPACE)
+        network_instances = tree.findall(".//ipi-network-instance:network-instance", namespaces=NAMESPACE)
 
-        for vlan in vlans:
-            vlan_identifier = vlan.find(".//ipi-vlan:vlan-id", namespaces=NAMESPACE).text
-            vlan_state = vlan.find(".//ipi-vlan:customer-vlan/ipi-vlan:config/ipi-vlan:state", namespaces=NAMESPACE)
+        for instance in network_instances:
+            bridge_id_val = instance.find(".//ipi-network-instance:instance-name", namespaces=NAMESPACE).text
 
-            if vlan_identifier == vlan_id and vlan_state is not None:
-                is_l2_vlan = True
+
+            if bridge_id == bridge_id_val:
+                vlan_identifier = instance.find(".//ipi-vlan:vlans/ipi-vlan:vlan/ipi-vlan:vlan-id", namespaces=NAMESPACE).text
+                vlan_state = instance.find(".//ipi-vlan:customer-vlan/ipi-vlan:config/ipi-vlan:state", namespaces=NAMESPACE)
+
+                if vlan_identifier == vlan_id and vlan_state is not None:
+                    is_l2_vlan = True
 
         return render_template("configure_interface.html", name=name, isL2Vlan=is_l2_vlan)
 
@@ -169,7 +174,7 @@ def configure_interface(name=None):
                     print(f"Error: {e}")
                     return redirect("/vlans/create-vlan")
 
-            if is_l2_vlan and bind_interface_name is not None:
+            if is_l2_vlan == "True" and bind_interface_name is not None:
                 try:
                     bind_l2_vlan_result = m.edit_config(target="candidate", config=new_bind_config_tree)
                     m.commit()
@@ -177,11 +182,11 @@ def configure_interface(name=None):
                     print(f"Error: {e}")
                     return redirect("/vlans/create-vlan")
 
-            if not is_l2_vlan and bind_interface_name is not None:
+            if is_l2_vlan == "False" and bind_interface_name is not None:
                 try:
                     result = m.edit_config(target="candidate", config=new_config_tree)
                     m.commit()
-
+                    
                     if "<ok/>" in str(result):
                         bind_l3_vlan_result = m.edit_config(target="candidate", config=new_bind_config_tree)
                         m.commit()

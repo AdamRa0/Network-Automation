@@ -140,15 +140,15 @@ BIND_L3_VLAN_TO_INTERFACE = """
             <port-vlan xmlns="http://www.ipinfusion.com/yang/ocnos/ipi-port-vlan">
                 <switched-vlans>
                     <switched-vlan>
-                    <interface-mode></interface-mode>
-                    <config>
                         <interface-mode></interface-mode>
-                    </config>
-                    <allowed-vlan>
                         <config>
-                        <allowed-vlan-id></allowed-vlan-id>
+                            <interface-mode></interface-mode>
                         </config>
-                    </allowed-vlan>
+                        <allowed-vlan>
+                            <config>
+                                <allowed-vlan-id></allowed-vlan-id>
+                            </config>
+                        </allowed-vlan>
                     </switched-vlan>
                 </switched-vlans>
             </port-vlan>

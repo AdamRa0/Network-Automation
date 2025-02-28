@@ -70,6 +70,7 @@ def configure_interface(name=None):
         bind_bridge_id = request.form.get("bridge-interface")
 
         is_l2_vlan = request.form.get("is-l2-vlan")
+        is_switchport = request.form.get("is-switchport")
 
         BIND_CONFIG = BIND_INTERFACE_TO_BRIDGE_CONFIG if bind_bridge_id is not None else BIND_L2_VLAN_TO_INTERFACE if is_l2_vlan == "True" and bind_interface_name is not None else BIND_L3_VLAN_TO_INTERFACE
 
@@ -79,16 +80,27 @@ def configure_interface(name=None):
         new_bind_config_tree = ""
 
         # Interface config xml parsing
+
+        interface_element = config_tree.find(".//ipi-interface:interface", namespaces=NAMESPACE)
+        ipv4_element = config_tree.find(".//ipi-if-ip:ipv4", namespaces=NAMESPACE)
+
         interface_name_tag = config_tree.find(".//ipi-interface:interface/ipi-interface:name", namespaces=NAMESPACE)
         interface_config_name_tag = config_tree.find(".//ipi-interface:interface/ipi-interface:config/ipi-interface:name", namespaces=NAMESPACE)
+        interface_config_tag = config_tree.find(".//ipi-interface:interface/ipi-interface:config", namespaces=NAMESPACE)
         config_ip_tag = config_tree.find(".//ipi-if-ip:ipv4/ipi-if-ip:config/ipi-if-ip:primary-ip-addr", namespaces=NAMESPACE)
 
         if config_ip_tag is not None: config_ip_tag.text = interface_ip
         if interface_name_tag is not None: interface_name_tag.text = interface_name
         if interface_config_name_tag is not None: interface_config_name_tag.text = interface_name
 
-        # Bind config xml parsing
+        if interface_config_tag is not None and is_switchport:
+            switchport_element = ET.Element("{http://www.ipinfusion.com/yang/ocnos/ipi-interface}enable-switchport")
+            interface_config_tag.append(switchport_element)
 
+        if is_switchport and interface_element is not None and ipv4_element is not None:
+            interface_element.remove(ipv4_element)
+
+        # Bind config xml parsing
         if bind_bridge_id is not None:
             bridge_id = bind_config_tree.find(".//ipi-network-instance:network-instance/ipi-network-instance:instance-name", namespaces=NAMESPACE)
             bridge_config_id = bind_config_tree.find(".//ipi-network-instance:network-instance/ipi-network-instance:config/ipi-network-instance:instance-name", namespaces=NAMESPACE)
@@ -135,7 +147,7 @@ def configure_interface(name=None):
         new_config_tree = ET.tostring(config_tree, encoding="unicode")
 
         with manager.connect(host="192.168.10.102", username="ocnos", password="ocnos", hostkey_verify=False) as m:
-            if bind_bridge_id is not None:
+            if bind_bridge_id is not None and bind_bridge_id != "":
                 try:
                     result = m.edit_config(target="candidate", config=new_config_tree)
                     m.commit()
@@ -143,6 +155,16 @@ def configure_interface(name=None):
                     if "<ok/>" in str(result):
                         bind_bridge_result = m.edit_config(target="candidate", config=new_bind_config_tree)
                         m.commit()
+
+                except Exception as e:
+                    print(f"Error: {e}")
+                    return redirect("/vlans/create-vlan")
+
+            if bind_bridge_id is not None and bind_bridge_id == "":
+                try:
+                    print(new_config_tree)
+                    result = m.edit_config(target="candidate", config=new_config_tree)
+                    m.commit()
 
                 except Exception as e:
                     print(f"Error: {e}")
